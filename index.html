@@ -1,7 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>EvangelieApp — Слово для сердца</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
   <header>
     <h1>📖 EvangelieApp</h1>
-    <p>Цифровой мост Благовестия — вдохновение каждый день 🙏</p>
+    <p>Добро пожаловать в цифровую Библию, которая говорит к сердцу 🙏</p>
   </header>
 
   <section class="daily">
@@ -10,7 +17,7 @@
       <button onclick="showDailyVerse()">Показать стих</button>
       <button onclick="speakDaily()">🎙️ Озвучить</button>
     </div>
-    <div id="daily-verse">Нажмите, чтобы получить вдохновение</div>
+    <div id="daily-verse">Нажмите, чтобы вдохновиться</div>
   </section>
 
   <section class="reader">
@@ -36,61 +43,82 @@
   <footer>
     <p>© EvangelieApp • служение через Слово • с любовью 🙌</p>
   </footer>
-</body>
-<script>
-  let bibleData = {};
 
-  // Загружаем Библию из JSON-файла
-  fetch('biblie.json')
-    .then(response => response.json())
-    .then(data => {
-      bibleData = data;
-      populateBooks(); // Заполняем выпадающий список книг
-    });
+  <script>
+    // 📆 Стихи дня
+    const versesOfDay = [
+      "Господь — Пастырь мой; я ни в чём не буду нуждаться. — Псалтирь 22:1",
+      "Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного... — Иоанна 3:16",
+      "Все могу в укрепляющем меня Иисусе Христе. — Филиппийцам 4:13",
+      "Не бойся, ибо Я с тобою. — Исайя 41:10",
+      "Блаженны миротворцы, ибо они наречены будут сынами Божиими. — Матфея 5:9"
+    ];
 
-  // Заполнение списка книг
-  function populateBooks() {
-    const select = document.getElementById("book");
-    bibleData.Books.forEach(book => {
-      const option = document.createElement("option");
-      option.value = book.Book;
-      option.textContent = book.Book;
-      select.appendChild(option);
-    });
-  }
-
-  // Отображение стиха
-  function readVerse() {
-    const bookName = document.getElementById("book").value;
-    const chapterNum = document.getElementById("chapter").value;
-    const verseNum = document.getElementById("verse").value;
-
-    const book = bibleData.Books.find(b => b.Book === bookName);
-    if (!book) return showError();
-
-    const chapter = book.Chapters.find(c => c.Chapter == chapterNum);
-    if (!chapter) return showError();
-
-    const verse = chapter.Verses.find(v => v.Verse == verseNum);
-    if (!verse) return showError();
-
-    document.getElementById("bible-output").textContent =
-      `${bookName} ${chapterNum}:${verseNum} — ${verse.Text}`;
-  }
-
-  // Озвучка
-  function speakBible() {
-    const text = document.getElementById("bible-output").textContent;
-    if (text) {
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = "ru-RU";
-      speechSynthesis.speak(utter);
+    function showDailyVerse() {
+      const r = Math.floor(Math.random() * versesOfDay.length);
+      document.getElementById("daily-verse").textContent = versesOfDay[r];
     }
-  }
 
-  // Ошибка, если стих не найден
-  function showError() {
-    document.getElementById("bible-output").textContent =
-      "Стих не найден. Проверьте книгу, главу и стих.";
-  }
-</script>
+    function speakDaily() {
+      const text = document.getElementById("daily-verse").textContent;
+      if (text) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "ru-RU";
+        speechSynthesis.speak(utter);
+      }
+    }
+
+    // 📚 Загрузка Библии
+    let bibleData = {};
+
+    fetch('biblie.json')
+      .then(response => response.json())
+      .then(data => {
+        bibleData = data;
+        populateBooks();
+      });
+
+    function populateBooks() {
+      const select = document.getElementById("book");
+      bibleData.Books.forEach(book => {
+        const option = document.createElement("option");
+        option.value = book.Book;
+        option.textContent = book.Book;
+        select.appendChild(option);
+      });
+    }
+
+    function readVerse() {
+      const bookName = document.getElementById("book").value;
+      const chapterNum = document.getElementById("chapter").value;
+      const verseNum = document.getElementById("verse").value;
+
+      const book = bibleData.Books.find(b => b.Book === bookName);
+      if (!book) return showError();
+
+      const chapter = book.Chapters.find(c => c.Chapter == chapterNum);
+      if (!chapter) return showError();
+
+      const verse = chapter.Verses.find(v => v.Verse == verseNum);
+      if (!verse) return showError();
+
+      document.getElementById("bible-output").textContent =
+        `${bookName} ${chapterNum}:${verseNum} — ${verse.Text}`;
+    }
+
+    function speakBible() {
+      const text = document.getElementById("bible-output").textContent;
+      if (text) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "ru-RU";
+        speechSynthesis.speak(utter);
+      }
+    }
+
+    function showError() {
+      document.getElementById("bible-output").textContent =
+        "Стих не найден. Проверьте книгу, главу и стих.";
+    }
+  </script>
+</body>
+</html>
