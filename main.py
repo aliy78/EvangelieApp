@@ -1,16 +1,13 @@
-
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template, jsonify
 from sentence_transformers import SentenceTransformer, util
 import json
 
 app = Flask(__name__)
 model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
 
-# Загружаем Библию из JSON-файла
 with open('biblie.json', encoding='utf-8') as f:
     data = json.load(f)
 
-# Собираем список стихов и сохраняем ссылки на них
 verses = []
 references = []
 
@@ -23,8 +20,11 @@ for book in data['Books']:
             ref = f"{book_name} {chapter_num}:{verse['Verse']}"
             references.append(ref)
 
-# Строим эмбеддинги
 embeddings = model.encode(verses, convert_to_tensor=True)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -38,8 +38,7 @@ def search():
 
     return jsonify({
         'verse': verses[top_idx],
-        'reference': references[top_idx],
-        'score': float(scores[top_idx])
+        'reference': references[top_idx]
     })
 
 if __name__ == '__main__':
