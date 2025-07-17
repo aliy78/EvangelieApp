@@ -1,1 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Поиск стиха по смыслу</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+    input, button { padding: 10px; font-size: 16px; }
+    #result { margin-top: 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>🧠 Смысловой поиск по Библии</h1>
+  <input type="text" id="query" placeholder="Введите тему: страх, надежда, прощение...">
+  <button onclick="searchVerse()">Найти стих</button>
+
+  <div id="result">Стих появится здесь...</div>
+
+  <script>
+    async function searchVerse() {
+      const q = document.getElementById("query").value;
+      const res = await fetch('/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q })
+      });
+      const data = await res.json();
+      document.getElementById("result").textContent =
+        `"${data.verse}" — ${data.reference}`;
+    }
+  </script>
+</body>
+</html>
 
