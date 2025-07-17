@@ -2,26 +2,53 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>EvangelieApp — Поиск по смыслу</title>
+  <title>EvangelieApp — Слово дня</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>🔍 Смысловой поиск по Библии</h1>
-  <input type="text" id="query" placeholder="Введите тему: страх, надежда, прощение...">
-  <button onclick="searchVerse()">Найти стих</button>
-  <div id="result">Здесь появится подходящий стих 📖</div>
+  <h1>📖 Добро пожаловать в EvangelieApp</h1>
+  <p>Пусть Божье Слово говорит прямо в сердце 🙏</p>
+
+  <div class="buttons">
+    <button onclick="searchVerse()">🔍 Найти стих по смыслу</button>
+    <button onclick="getDailyVerse()">📆 Стих дня</button>
+    <button onclick="speakVerse()">🎙️ Озвучить</button>
+  </div>
+
+  <div id="result">Здесь появится стих 📖</div>
 
   <script>
     async function searchVerse() {
-      const q = document.getElementById("query").value;
+      const query = prompt("Введите тему: страх, надежда, прощение...");
+      if (!query) return;
       const res = await fetch('/search', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ query })
       });
       const data = await res.json();
       document.getElementById("result").textContent =
         `"${data.verse}" — ${data.reference}`;
+    }
+
+    async function getDailyVerse() {
+      const topics = ["надежда", "любовь", "молитва", "покой"];
+      const topic = topics[Math.floor(Math.random() * topics.length)];
+      const res = await fetch('/search', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ query: topic })
+      });
+      const data = await res.json();
+      document.getElementById("result").textContent =
+        `📆 Стих дня:\n"${data.verse}" — ${data.reference}`;
+    }
+
+    function speakVerse() {
+      const text = document.getElementById("result").textContent;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "ru-RU";
+      speechSynthesis.speak(utterance);
     }
   </script>
 </body>
