@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>EvangelieApp — Слово для сердца</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>📖 EvangelieApp</h1>
+    <p>Цифровой мост Благовестия — вдохновение каждый день 🙏</p>
+  </header>
+
+  <section>
+    <div class="buttons">
+      <button onclick="showDailyVerse()">📆 Стих дня</button>
+      <button onclick="speakVerse()">🎙️ Озвучить</button>
+      <button onclick="copyVerse()">🔗 Поделиться</button>
+    </div>
+
+    <div id="verse-box">Нажмите «Стих дня», чтобы получить вдохновение 📖</div>
+  </section>
+
+  <footer>
+    <p>© EvangelieApp • Служение через Слово</p>
+  </footer>
+
+  <script>
+    const verses = [
+      "Господь — Пастырь мой; я ни в чём не буду нуждаться. — Псалтирь 22:1",
+      "Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного... — Иоанна 3:16",
+      "Все могу в укрепляющем меня Иисусе Христе. — Филиппийцам 4:13",
+      "Не бойся, ибо Я с тобою. — Исайя 41:10",
+      "Будь твёрд и мужествен: Я с тобою! — Иисус Навин 1:9"
+    ];
+
+    function showDailyVerse() {
+      const randomIndex = Math.floor(Math.random() * verses.length);
+      document.getElementById("verse-box").textContent = verses[randomIndex];
+    }
+
+    function speakVerse() {
+      const text = document.getElementById("verse-box").textContent;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "ru-RU";
+      speechSynthesis.speak(utterance);
+    }
+
+    function copyVerse() {
+      const text = document.getElementById("verse-box").textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Стих скопирован! Можешь отправить его другому ❤️");
+      });
+    }
+  </script>
+</body>
+</html>
