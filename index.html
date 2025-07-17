@@ -1,3 +1,42 @@
+<body>
+  <header>
+    <h1>📖 EvangelieApp</h1>
+    <p>Цифровой мост Благовестия — вдохновение каждый день 🙏</p>
+  </header>
+
+  <section class="daily">
+    <h2>📆 Стих дня</h2>
+    <div class="buttons">
+      <button onclick="showDailyVerse()">Показать стих</button>
+      <button onclick="speakDaily()">🎙️ Озвучить</button>
+    </div>
+    <div id="daily-verse">Нажмите, чтобы получить вдохновение</div>
+  </section>
+
+  <section class="reader">
+    <h2>📚 Читать Библию</h2>
+    <div class="inputs">
+      <label>Книга:
+        <select id="book"></select>
+      </label>
+      <label>Глава:
+        <input type="number" id="chapter" min="1" value="1">
+      </label>
+      <label>Стих:
+        <input type="number" id="verse" min="1" value="1">
+      </label>
+    </div>
+    <div class="buttons">
+      <button onclick="readVerse()">📖 Показать стих</button>
+      <button onclick="speakBible()">🎙️ Озвучить</button>
+    </div>
+    <div id="bible-output">Выберите книгу, главу и стих</div>
+  </section>
+
+  <footer>
+    <p>© EvangelieApp • служение через Слово • с любовью 🙌</p>
+  </footer>
+</body>
 <script>
   let bibleData = {};
 
