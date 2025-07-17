@@ -2,55 +2,104 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>EvangelieApp — Слово для сердца</title>
+  <title>EvangelieApp — Мост Благовестия</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>📖 EvangelieApp</h1>
-    <p>Цифровой мост Благовестия — вдохновение каждый день 🙏</p>
+    <p>Добро пожаловать в цифровую Библию, которая говорит к сердцу 🙏</p>
   </header>
 
-  <section>
-    <div class="buttons">
-      <button onclick="showDailyVerse()">📆 Стих дня</button>
-      <button onclick="speakVerse()">🎙️ Озвучить</button>
-      <button onclick="copyVerse()">🔗 Поделиться</button>
-    </div>
+  <section class="daily">
+    <h2>📆 Стих дня</h2>
+    <button onclick="showDailyVerse()">Показать</button>
+    <button onclick="speakDaily()">🎙️ Озвучить</button>
+    <div id="daily-verse">Нажмите, чтобы вдохновиться</div>
+  </section>
 
-    <div id="verse-box">Нажмите «Стих дня», чтобы получить вдохновение 📖</div>
+  <section class="reader">
+    <h2>📚 Читать Библию</h2>
+    <div class="inputs">
+      <label>Книга:
+        <select id="book">
+          <option value="Псалтирь">Псалтирь</option>
+          <option value="Иоанна">Иоанна</option>
+          <option value="Матфея">Матфея</option>
+        </select>
+      </label>
+      <label>Глава: <input type="number" id="chapter" min="1" value="1"></label>
+      <label>Стих: <input type="number" id="verse" min="1" value="1"></label>
+    </div>
+    <button onclick="readVerse()">📖 Показать стих</button>
+    <button onclick="speakBible()">🎙️ Озвучить</button>
+    <div id="bible-output">Выберите книгу, главу и стих</div>
   </section>
 
   <footer>
-    <p>© EvangelieApp • Служение через Слово</p>
+    <p>© EvangelieApp • служение Словом • с любовью 🙌</p>
   </footer>
 
   <script>
-    const verses = [
+    const versesOfDay = [
       "Господь — Пастырь мой; я ни в чём не буду нуждаться. — Псалтирь 22:1",
       "Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного... — Иоанна 3:16",
       "Все могу в укрепляющем меня Иисусе Христе. — Филиппийцам 4:13",
       "Не бойся, ибо Я с тобою. — Исайя 41:10",
-      "Будь твёрд и мужествен: Я с тобою! — Иисус Навин 1:9"
+      "Блаженны миротворцы, ибо они наречены будут сынами Божиими. — Матфея 5:9"
     ];
 
+    const bible = {
+      "Псалтирь": {
+        "22": {
+          "1": "Господь — Пастырь мой; я ни в чём не буду нуждаться.",
+          "4": "Если я пойду долиной смертной тени — не убоюсь зла, потому что Ты со мной."
+        }
+      },
+      "Иоанна": {
+        "3": {
+          "16": "Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного, дабы всякий верующий в Него не погиб, но имел жизнь вечную."
+        }
+      },
+      "Матфея": {
+        "5": {
+          "9": "Блаженны миротворцы, ибо они наречены будут сынами Божиими."
+        }
+      }
+    };
+
     function showDailyVerse() {
-      const randomIndex = Math.floor(Math.random() * verses.length);
-      document.getElementById("verse-box").textContent = verses[randomIndex];
+      const r = Math.floor(Math.random() * versesOfDay.length);
+      document.getElementById("daily-verse").textContent = versesOfDay[r];
     }
 
-    function speakVerse() {
-      const text = document.getElementById("verse-box").textContent;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "ru-RU";
-      speechSynthesis.speak(utterance);
+    function speakDaily() {
+      const text = document.getElementById("daily-verse").textContent;
+      if (text) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "ru-RU";
+        speechSynthesis.speak(utter);
+      }
     }
 
-    function copyVerse() {
-      const text = document.getElementById("verse-box").textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Стих скопирован! Можешь отправить его другому ❤️");
-      });
+    function readVerse() {
+      const book = document.getElementById("book").value;
+      const chapter = document.getElementById("chapter").value;
+      const verse = document.getElementById("verse").value;
+      const text = bible?.[book]?.[chapter]?.[verse];
+      document.getElementById("bible-output").textContent =
+        text
+          ? `${book} ${chapter}:${verse} — ${text}`
+          : "Стих не найден. Проверьте введённые значения.";
+    }
+
+    function speakBible() {
+      const text = document.getElementById("bible-output").textContent;
+      if (text) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "ru-RU";
+        speechSynthesis.speak(utter);
+      }
     }
   </script>
 </body>
