@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
 
-# 📖 Загрузка базы стихов
+# 📖 Загрузка Библии
 def load_bible():
     with open('biblie.json', encoding='utf-8') as f:
         data = json.load(f)
@@ -34,7 +34,7 @@ def home():
 def search():
     query = request.json.get('query')
     if not query:
-        return jsonify({'error': 'Нет запроса'}), 400
+        return jsonify({'error': 'Запрос не указан'}), 400
     query_embedding = model.encode(query, convert_to_tensor=True)
     scores = util.cos_sim(query_embedding, embeddings)[0]
     top_idx = int(scores.argmax())
@@ -43,7 +43,7 @@ def search():
         'reference': references[top_idx]
     })
 
-# 🚀 Запуск сервера — корректно для Render
+# 🚀 Запуск сервера
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
