@@ -2,19 +2,14 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Поиск стиха по смыслу</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
-    input, button { padding: 10px; font-size: 16px; }
-    #result { margin-top: 20px; font-size: 18px; }
-  </style>
+  <title>EvangelieApp — Поиск по смыслу</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>🧠 Смысловой поиск по Библии</h1>
+  <h1>🔍 Смысловой поиск по Библии</h1>
   <input type="text" id="query" placeholder="Введите тему: страх, надежда, прощение...">
   <button onclick="searchVerse()">Найти стих</button>
-
-  <div id="result">Стих появится здесь...</div>
+  <div id="result">Здесь появится подходящий стих 📖</div>
 
   <script>
     async function searchVerse() {
@@ -31,4 +26,3 @@
   </script>
 </body>
 </html>
-
