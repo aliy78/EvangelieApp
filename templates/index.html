@@ -2,53 +2,38 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>EvangelieApp — Слово дня</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <title>EvangelieApp — Слово для сердца</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>📖 Добро пожаловать в EvangelieApp</h1>
-  <p>Пусть Божье Слово говорит прямо в сердце 🙏</p>
+  <p>Пусть Божье Слово заговорит прямо в душе 🙏</p>
 
   <div class="buttons">
-    <button onclick="searchVerse()">🔍 Найти стих по смыслу</button>
-    <button onclick="getDailyVerse()">📆 Стих дня</button>
+    <button onclick="showRandomVerse()">📆 Стих дня</button>
     <button onclick="speakVerse()">🎙️ Озвучить</button>
   </div>
 
-  <div id="result">Здесь появится стих 📖</div>
+  <div id="result">Нажмите кнопку, чтобы получить вдохновение 📖</div>
 
   <script>
-    async function searchVerse() {
-      const query = prompt("Введите тему: страх, надежда, прощение...");
-      if (!query) return;
-      const res = await fetch('/search', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ query })
-      });
-      const data = await res.json();
-      document.getElementById("result").textContent =
-        `"${data.verse}" — ${data.reference}`;
-    }
+    const verses = [
+      "Господь — Пастырь мой; я ни в чём не буду нуждаться. — Псалтирь 22:1",
+      "Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного... — Иоанна 3:16",
+      "Не бойся, ибо Я с тобою; не смущайся, ибо Я Бог твой. — Исайя 41:10",
+      "Все могу в укрепляющем меня Иисусе Христе. — Филиппийцам 4:13"
+    ];
 
-    async function getDailyVerse() {
-      const topics = ["надежда", "любовь", "молитва", "покой"];
-      const topic = topics[Math.floor(Math.random() * topics.length)];
-      const res = await fetch('/search', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ query: topic })
-      });
-      const data = await res.json();
-      document.getElementById("result").textContent =
-        `📆 Стих дня:\n"${data.verse}" — ${data.reference}`;
+    function showRandomVerse() {
+      const random = Math.floor(Math.random() * verses.length);
+      document.getElementById("result").textContent = verses[random];
     }
 
     function speakVerse() {
       const text = document.getElementById("result").textContent;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "ru-RU";
-      speechSynthesis.speak(utterance);
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "ru-RU";
+      speechSynthesis.speak(utter);
     }
   </script>
 </body>
