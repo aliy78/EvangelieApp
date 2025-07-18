@@ -1,86 +1,86 @@
+/* Основной фон и шрифт */
 body {
   font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f4;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom, #eaf6ff, #ffffff);
-  color: #2c3e50;
+  color: #333;
 }
 
-header {
-  background-color: #4a90e2;
+/* Шапка и подвал */
+header, footer {
+  background-color: #4b6cb7;
   color: white;
-  padding: 30px 20px;
   text-align: center;
+  padding: 20px;
 }
 
-header h1 {
-  font-size: 36px;
-  margin: 0;
+/* Основная область */
+main {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
-section {
-  padding: 40px 20px;
-  text-align: center;
+/* Текстовое поле запроса */
+textarea#userInput {
+  width: 100%;
+  height: 120px;
+  padding: 15px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  transition: border-color 0.3s;
 }
 
-h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
+textarea#userInput:focus {
+  border-color: #4b6cb7;
+  outline: none;
 }
 
-.buttons button,
-button {
-  padding: 12px 20px;
-  margin: 10px;
-  font-size: 16px;
-  background-color: #4a90e2;
+/* Кнопка отправки */
+button#sendBtn {
+  background-color: #4b6cb7;
   color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #357ab8;
+button#sendBtn:hover {
+  background-color: #3a539b;
 }
 
-#daily-verse,
-#bible-output {
-  margin-top: 20px;
-  font-size: 20px;
-  background: white;
+/* Блок ответа */
+#responseBlock {
+  margin-top: 25px;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  background-color: #f9f9f9;
+  border-left: 4px solid #4b6cb7;
+  border-radius: 8px;
 }
 
-.inputs {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
+#responseBlock h2 {
+  margin-top: 0;
 }
 
-label {
-  font-size: 16px;
-}
+/* Адаптивность */
+@media (max-width: 600px) {
+  main {
+    margin: 20px;
+    padding: 15px;
+  }
 
-input, select {
-  padding: 8px;
-  margin-left: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-footer {
-  background-color: #f1f1f1;
-  text-align: center;
-  padding: 20px;
-  font-size: 14px;
-  color: #555;
+  button#sendBtn {
+    width: 100%;
+  }
 }
